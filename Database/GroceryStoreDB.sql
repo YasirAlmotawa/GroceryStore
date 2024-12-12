@@ -31,6 +31,10 @@ CREATE TABLE Users (
     email NVARCHAR(100) NOT NULL UNIQUE,
     phoneNumber NVARCHAR(15),
     password NVARCHAR(255) NOT NULL
+    creditcardNumber INT,
+    creditcardExpDate NVARCHAR(50),
+    cvv INT,
+    shippingLocation NVARCHAR(255)
 );
 
 -- Sale Table
@@ -68,10 +72,6 @@ CREATE TABLE CheckoutCart (
     productID INT NOT NULL REFERENCES Products(productID) ON DELETE CASCADE,
     quantity INT NOT NULL CHECK (quantity >= 0),
 );
-
--- Add Foreign Key to Products Table
-ALTER TABLE Products
-ADD FOREIGN KEY (categoryID) REFERENCES Categories(categoryID) ON DELETE SET NULL;
 
 -- Sample Data Insertion
 -- Insert Categories
