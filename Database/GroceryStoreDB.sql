@@ -15,6 +15,12 @@ GO
 USE GroceryStoreDB;
 GO
 
+-- Categories Table
+CREATE TABLE Categories (
+    categoryID INT IDENTITY PRIMARY KEY,
+    categoryName NVARCHAR(100) NOT NULL UNIQUE
+);
+
 -- Users Table
 CREATE TABLE Users (
     userID INT IDENTITY PRIMARY KEY,
@@ -25,6 +31,17 @@ CREATE TABLE Users (
     email NVARCHAR(100) NOT NULL UNIQUE,
     phoneNumber NVARCHAR(15),
     password NVARCHAR(255) NOT NULL
+);
+
+-- Discounts Table
+CREATE TABLE Discounts (
+    discountID INT IDENTITY PRIMARY KEY,
+    discountCategory NVARCHAR(100),
+    specificProductDiscount INT REFERENCES Products(productID) ON DELETE CASCADE,
+    discountPercent DECIMAL(5, 2) CHECK (discountPercent BETWEEN 0 AND 100),
+    discountStartDate DATE NOT NULL,
+    discountEndDate DATE NOT NULL,
+    discountCode NVARCHAR(255)
 );
 
 -- Products Table
@@ -43,29 +60,12 @@ CREATE TABLE Products (
     stock INT NOT NULL CHECK (stock >= 0)
 );
 
--- Discounts Table
-CREATE TABLE Discounts (
-    discountID INT IDENTITY PRIMARY KEY,
-    discountCategory NVARCHAR(100),
-    specificProductDiscount INT REFERENCES Products(productID) ON DELETE CASCADE,
-    discountPercent DECIMAL(5, 2) CHECK (discountPercent BETWEEN 0 AND 100),
-    discountStartDate DATE NOT NULL,
-    discountEndDate DATE NOT NULL,
-    discountCode NVARCHAR(255)
-);
-
 -- Checkout Cart Table
 CREATE TABLE CheckoutCart (
     cartID INT IDENTITY PRIMARY KEY,
     userID INT NOT NULL REFERENCES Users(userID) ON DELETE CASCADE,
     productID INT NOT NULL REFERENCES Products(productID) ON DELETE CASCADE,
     quantity INT NOT NULL CHECK (quantity >= 0),
-);
-
--- Categories Table
-CREATE TABLE Categories (
-    categoryID INT IDENTITY PRIMARY KEY,
-    categoryName NVARCHAR(100) NOT NULL UNIQUE
 );
 
 -- Add Foreign Key to Products Table
