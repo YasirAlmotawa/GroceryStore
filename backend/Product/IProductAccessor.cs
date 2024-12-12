@@ -1,7 +1,10 @@
-public interface IProductAccessor 
+namespace Product
 {
-  public Product GetProductById(int productId);
-  public List<Product> GetAllProducts();
-  public void UpdateProductStock(int productId, int stock);
-  public void ApplyDiscountToProduct(int productId, double discount);
+  public interface IProductAccessor
+  {
+    public Product GetProductById(int productId);
+    public List<Product> GetAllProducts();
+    public bool UpdateProductStock(int productId, int stock);
+    public bool ApplyDiscountToProduct(int productId, double discount);
+  }
 }

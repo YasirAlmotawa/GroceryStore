@@ -1,18 +1,21 @@
-public class Product 
+namespace Product
 {
-  public int productID { get; set; }
-  public string name { get; set; }
-  public string description { get; set; }
-  public double price { get; set; }
-  public string images { get; set; }
-  public string manufacturer { get; set; }
-  public string dimensions { get; set; }
-  public double weight { get; set; }
-  public double rating { get; set; }
-  public string SKU { get; set; }
-  public int categoryID { get; set; }
-  public int stock { get; set; }
-  public double discount { get; set; }
-  public DateTime discountStartDate { get; set; }
-  public DateTime discountEndDate { get; set; }
+  public class Product
+  {
+    public required int ProductID { get; set; }
+    public required string Name { get; set; }
+    public required string Description { get; set; }
+    public required double Price { get; set; }
+    public required string Images { get; set; }
+    public required string Manufacturer { get; set; }
+    public required string Dimensions { get; set; }
+    public required double Weight { get; set; }
+    public required double Rating { get; set; }
+    public required string SKU { get; set; }
+    public required int CategoryID { get; set; }
+    public required int Stock { get; set; }
+    public required double Discount { get; set; }
+    public required DateTime DiscountStartDate { get; set; }
+    public required DateTime DiscountEndDate { get; set; }
+  }
 }
