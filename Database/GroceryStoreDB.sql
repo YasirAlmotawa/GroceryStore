@@ -33,20 +33,18 @@ CREATE TABLE Users (
     password NVARCHAR(255) NOT NULL
 );
 
--- Discounts Table
-CREATE TABLE Discounts (
-    discountID INT IDENTITY PRIMARY KEY,
-    discountCategory NVARCHAR(100),
-    specificProductDiscount INT REFERENCES Products(productID) ON DELETE CASCADE,
-    discountPercent DECIMAL(5, 2) CHECK (discountPercent BETWEEN 0 AND 100),
-    discountStartDate DATE NOT NULL,
-    discountEndDate DATE NOT NULL,
-    discountCode NVARCHAR(255)
+-- Sale Table
+CREATE TABLE Sale (
+	saleID INT IDENTITY PRIMARY KEY,
+	discountAmount DECIMAL(5, 2) NOT NULL,
+	startDate DATE NOT NULL,
+	endDate DATE NOT NULL,
+    isPercentage BIT NOT NULL,
 );
 
 -- Products Table
 CREATE TABLE Products (
-    productID INT IDENTITY PRIMARY KEY,
+    productID INT PRIMARY KEY IDENTITY(1,1),
     name NVARCHAR(100) NOT NULL,
     description NVARCHAR(255),
     price DECIMAL(10, 2) NOT NULL,
@@ -57,7 +55,10 @@ CREATE TABLE Products (
     rating DECIMAL(3, 2) CHECK (rating BETWEEN 0 AND 5),
     SKU NVARCHAR(50) UNIQUE NOT NULL,
     categoryID INT,
-    stock INT NOT NULL CHECK (stock >= 0)
+    stock INT NOT NULL CHECK (stock >= 0),
+    saleID INT NULL, -- Foreign key to Sale
+    FOREIGN KEY (categoryID) REFERENCES Category(categoryID),
+    FOREIGN KEY (saleID) REFERENCES Sale(saleID)
 );
 
 -- Checkout Cart Table
