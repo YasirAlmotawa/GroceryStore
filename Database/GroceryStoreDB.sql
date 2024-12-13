@@ -50,15 +50,15 @@ CREATE TABLE Sales (
 CREATE TABLE Products (
     productID INT PRIMARY KEY IDENTITY(1,1),
     name NVARCHAR(100) NOT NULL,
-    description NVARCHAR(255),
+    description NVARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    images NVARCHAR(MAX),
-    manufacturer NVARCHAR(100),
-    dimensions NVARCHAR(50),
-    weight DECIMAL(10, 2),
-    rating DECIMAL(3, 2) CHECK (rating BETWEEN 0 AND 5),
+    images NVARCHAR(MAX) NOT NULL,
+    manufacturer NVARCHAR(100) NOT NULL,
+    dimensions NVARCHAR(50) NOT NULL,
+    weight DECIMAL(10, 2) NOT NULL,
+    rating DECIMAL(3, 2) CHECK (rating BETWEEN 0 AND 5) NOT NULL,
     SKU NVARCHAR(50) UNIQUE NOT NULL,
-    categoryID INT,
+    categoryID INT NOT NULL,
     stock INT NOT NULL CHECK (stock >= 0),
     saleID INT NULL, -- Foreign key to Sale
     FOREIGN KEY (categoryID) REFERENCES Categories(categoryID),
@@ -119,46 +119,46 @@ VALUES
 (1.50, GETDATE(), DATEADD(DAY, 30, GETDATE()), 0); -- $1.5 off for Meats
 
 -- Insert Products for Produce
-INSERT INTO Products (name, description, price, categoryID, stock, saleID, SKU)
+INSERT INTO Products (name, description, price, images, manufacturer, dimensions, weight, rating, SKU, categoryID, stock, saleID)
 VALUES
-('Tomatoes', 'Ripe roma tomatoes', 1.10, 1, 50, 1, 'P-SKU-1'),
-('Lettuce', 'Fresh green lettuce', 1.20, 1, 50, 1, 'P-SKU-2'),
-('Apples', 'Ripe red apples from the farms of Roca', 1.30, 1, 50, 1, 'P-SKU-3'),
-('Oranges', 'Imported oranges', 1.40, 1, 50, 1, 'P-SKU-4'),
-('Bananas', 'Underripe bananas imported from Honduras', 1.50, 1, 50, 1, 'P-SKU-5'),
-('Strawberries', 'Fresh local strawberries', 1.60, 1, 50, 1, 'P-SKU-6'),
-('Blackberries', 'Fresh local blackberries', 1.70, 1, 50, 1, 'P-SKU-7'),
-('Dates', 'Fresh sweet dates imported from Iraq', 1.80, 1, 50, 1, 'P-SKU-8'),
-('Celery', 'Fresh Celery', 1.90, 1, 50, 1, 'P-SKU-9'),
-('Peppers', 'Hot peppers fresh from local farms', 2.00, 1, 50, 1, 'P-SKU-10');
+('Tomatoes', 'Ripe roma tomatoes', 1.10, 'image.jpg', 'manufacturer', '1x2x2', 2.5, 4, 'P-SKU-1', 1, 9, 1),
+('Lettuce', 'Fresh green lettuce', 1.20, 'image.jpg', 'manufacturer', '1x2x2', 2.5, 4, 'P-SKU-2', 1, 9, 1),
+('Apples', 'Ripe red apples from the farms of Roca', 1.30, 'image.jpg', 'manufacturer', '1x2x2', 2.5, 4, 'P-SKU-3', 1, 9, 1),
+('Oranges', 'Imported oranges', 1.40, 'image.jpg', 'manufacturer', '1x2x2', 2.5, 4, 'P-SKU-4', 1, 9, 1),
+('Bananas', 'Underripe bananas imported from Honduras', 1.50, 'image.jpg', 'manufacturer', '1x2x2', 2.5, 4, 'P-SKU-5', 1, 9, 1),
+('Strawberries', 'Fresh local strawberries', 1.60, 'image.jpg', 'manufacturer', '1x2x2', 2.5, 4, 'P-SKU-6', 1, 9, 1),
+('Blackberries', 'Fresh local blackberries', 1.70, 'image.jpg', 'manufacturer', '1x2x2', 2.5, 4, 'P-SKU-7', 1, 9, 1),
+('Dates', 'Fresh sweet dates imported from Iraq', 1.80, 'image.jpg', 'manufacturer', '1x2x2', 2.5, 4, 'P-SKU-8', 1, 9, 1),
+('Celery', 'Fresh Celery', 1.90, 'image.jpg', 'manufacturer', '1x2x2', 2.5, 4, 'P-SKU-9', 1, 9, 1),
+('Peppers', 'Hot peppers fresh from local farms', 2.00, 'image.jpg', 'manufacturer', '1x2x2', 2.5, 4, 'P-SKU-10', 1, 9, 1);
 
 -- Insert Products for Dairy
-INSERT INTO Products (name, description, price, categoryID, stock, SKU)
+INSERT INTO Products (name, description, price, images, manufacturer, dimensions, weight, rating, SKU, categoryID, stock, saleID)
 VALUES
-('Full Fat Milk', 'Fresh full fat milk', 2.20, 2, 50, 'D-SKU-1'),
-('Skim Milk', 'Fresh skim milk', 2.40, 2, 50, 'D-SKU-2'),
-('Salted Butter', 'Fresh salted butter', 2.60, 2, 50, 'D-SKU-3'),
-('Unsalted Butter', 'Fresh unsalted butter', 2.80, 2, 50, 'D-SKU-4'),
-('Yogurt', 'Fresh yogurt from the top of a mountain in Greece', 3.00, 2, 50, 'D-SKU-5'),
-('Sour Cream', 'Fresh sour cream', 3.20, 2, 50, 'D-SKU-6'),
-('Cheddar Cheese', 'Fresh cheddar cheese', 3.40, 2, 50, 'D-SKU-7'),
-('Vanilla Ice Cream', 'Fresh vanilla ice cream', 3.60, 2, 50, 'D-SKU-8'),
-('Chocolate Ice Cream', 'Fresh chocolate ice cream', 3.80, 2, 50, 'D-SKU-9'),
-('Fat Free Ice Cream', 'Fresh fat free ice cream', 4.00, 2, 50, 'D-SKU-10');
+('Full Fat Milk', 'Fresh full fat milk', 2.49, 'image.jpg', 'manufacturer', '1x2x5', 6.2, 4.5, 'D-SKU-1', 2, 9, 2),
+('Skim Milk', 'Fresh skim milk', 2.49, 'image.jpg', 'manufacturer', '1x2x5', 6.2, 4.5, 'D-SKU-2', 2, 9, 2),
+('Salted Butter', 'Fresh salted butter', 2.49, 'image.jpg', 'manufacturer', '1x2x5', 6.2, 4.5, 'D-SKU-3', 2, 9, 2),
+('Unsalted Butter', 'Fresh unsalted butter', 2.49, 'image.jpg', 'manufacturer', '1x2x5', 6.2, 4.5, 'D-SKU-4', 2, 9, 2),
+('Yogurt', 'Fresh yogurt from the top of a mountain in Greece', 2.49, 'image.jpg', 'manufacturer', '1x2x5', 6.2, 4.5, 'D-SKU-5', 2, 9, 2),
+('Sour Cream', 'Fresh sour cream', 2.49, 'image.jpg', 'manufacturer', '1x2x5', 6.2, 4.5, 'D-SKU-6', 2, 9, 2),
+('Cheddar Cheese', 'Fresh cheddar cheese', 2.49, 'image.jpg', 'manufacturer', '1x2x5', 6.2, 4.5, 'D-SKU-7', 2, 9, 2),
+('Vanilla Ice Cream', 'Fresh vanilla ice cream', 2.49, 'image.jpg', 'manufacturer', '1x2x5', 6.2, 4.5, 'D-SKU-8', 2, 9, 2),
+('Chocolate Ice Cream', 'Fresh chocolate ice cream', 2.49, 'image.jpg', 'manufacturer', '1x2x5', 6.2, 4.5, 'D-SKU-9', 2, 9, 2),
+('Fat Free Ice Cream', 'Fresh fat free ice cream', 2.49, 'image.jpg', 'manufacturer', '1x2x5', 6.2, 4.5, 'D-SKU-10', 2, 9, 2);
 
 -- Insert Products for Meats
-INSERT INTO Products (name, description, price, categoryID, stock, saleID, SKU)
+INSERT INTO Products (name, description, price, images, manufacturer, dimensions, weight, rating, SKU, categoryID, stock, saleID)
 VALUES
-('Ground Beef', 'Fresh ground beef', 5.50, 3, 50, 2, 'M-SKU-1'),
-('Bacon', 'Fresh bacon', 6.00, 3, 50, 2, 'M-SKU-2'),
-('Ham', 'Fresh ham', 6.50, 3, 50, 2, 'M-SKU-3'),
-('Salami', 'Fresh salami', 5.50, 3, 50, 2, 'M-SKU-4'),
-('Meatballs', 'Fresh meatballs', 6.00, 3, 50, 2, 'M-SKU-5'),
-('Whole Chicken', 'Fresh whole chicken', 6.50, 3, 50, 2, 'M-SKU-6'),
-('Lamb Shank', 'Fresh lamb shank', 5.50, 3, 50, 2, 'M-SKU-7'),
-('Meat Patties', 'Fresh meat patties', 6.00, 3, 50, 2, 'M-SKU-8'),
-('Meatloaf', 'Fresh meatloaf', 6.50, 3, 50, 2, 'M-SKU-9'),
-('Steak Beef', 'Fresh steak beef', 5.50, 3, 50, 2, 'M-SKU-10');
+('Ground Beef', 'Fresh ground beef', 9.99, 'image.jpg', 'manufacturer', '2x5x4', 4.5, 3.75, 'M-SKU-1', 3, 9, NULL),
+('Bacon', 'Fresh bacon', 9.99, 'image.jpg', 'manufacturer', '2x5x4', 4.5, 3.75, 'M-SKU-2', 3, 9, NULL),
+('Ham', 'Fresh ham', 9.99, 'image.jpg', 'manufacturer', '2x5x4', 4.5, 3.75, 'M-SKU-3', 3, 9, NULL),
+('Salami', 'Fresh salami', 9.99, 'image.jpg', 'manufacturer', '2x5x4', 4.5, 3.75, 'M-SKU-4', 3, 9, NULL),
+('Meatballs', 'Fresh meatballs', 9.99, 'image.jpg', 'manufacturer', '2x5x4', 4.5, 3.75, 'M-SKU-5', 3, 9, NULL),
+('Whole Chicken', 'Fresh whole chicken', 9.99, 'image.jpg', 'manufacturer', '2x5x4', 4.5, 3.75, 'M-SKU-6', 3, 9, NULL),
+('Lamb Shank', 'Fresh lamb shank', 9.99, 'image.jpg', 'manufacturer', '2x5x4', 4.5, 3.75, 'M-SKU-7', 3, 9, NULL),
+('Meat Patties', 'Fresh meat patties', 9.99, 'image.jpg', 'manufacturer', '2x5x4', 4.5, 3.75, 'M-SKU-8', 3, 9, NULL),
+('Meatloaf', 'Fresh meatloaf', 9.99, 'image.jpg', 'manufacturer', '2x5x4', 4.5, 3.75, 'M-SKU-9', 3, 9, NULL),
+('Steak Beef', 'Fresh steak beef', 9.99, 'image.jpg', 'manufacturer', '2x5x4', 4.5, 3.75, 'M-SKU-10', 3, 9, NULL);
 
 -- Show All Tables 
 -- UNCOMMENT IF NEEDED 
