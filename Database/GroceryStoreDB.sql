@@ -1,76 +1,76 @@
 -- Terminate all active connections to the database
 USE master;
 GO
-IF DB_ID('GroceryStoreDB') IS NOT NULL
+IF DB_ID('QuikShopDB') IS NOT NULL
 BEGIN
-    ALTER DATABASE GroceryStoreDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE GroceryStoreDB;
+    ALTER DATABASE QuikShopDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE QuikShopDB;
 END;
 GO
 
 -- Make a database
-CREATE DATABASE GroceryStoreDB;
+CREATE DATABASE QuikShopDB;
 GO
 
-USE GroceryStoreDB;
+USE QuikShopDB;
 GO
 
 -- Categories Table
 CREATE TABLE Categories (
-    CategoryID INT IDENTITY PRIMARY KEY,
-    CategoryName NVARCHAR(100) NOT NULL UNIQUE
+    categoryID INT IDENTITY PRIMARY KEY,
+    categoryName NVARCHAR(100) NOT NULL UNIQUE
 );
 
 -- Users Table
-CREATE TABLE Users (
-    UserID INT IDENTITY PRIMARY KEY,
-    Username NVARCHAR(50) NOT NULL UNIQUE,
-    FirstName NVARCHAR(50) NOT NULL,
-    LastName NVARCHAR(50) NOT NULL,
-    Address NVARCHAR(255),
-    Email NVARCHAR(100) NOT NULL UNIQUE,
-    PhoneNumber NVARCHAR(15),
-    Password NVARCHAR(255) NOT NULL,
-    CreditcardNumber NVARCHAR(255),
-    CreditcardExpDate NVARCHAR(255),
+CREATE TABLE users (
+    userID INT IDENTITY PRIMARY KEY,
+    username NVARCHAR(50) NOT NULL UNIQUE,
+    firstName NVARCHAR(50) NOT NULL,
+    lastName NVARCHAR(50) NOT NULL,
+    address NVARCHAR(255),
+    email NVARCHAR(100) NOT NULL UNIQUE,
+    phoneNumber NVARCHAR(15),
+    password NVARCHAR(255) NOT NULL,
+    creditcardNumber NVARCHAR(255),
+    creditcardExpDate NVARCHAR(255),
     cvv INT,
-    ShippingLocation NVARCHAR(255)
+    shippingLocation NVARCHAR(255)
 );
 
 -- Sales Table
 CREATE TABLE Sales (
-	SaleID INT IDENTITY PRIMARY KEY,
-	DiscountAmount DECIMAL(5, 2) NOT NULL,
-	StartDate DATE NOT NULL,
-	EndDate DATE NOT NULL,
-    IsPercentage BIT NOT NULL,
+	saleID INT IDENTITY PRIMARY KEY,
+	discountAmount DECIMAL(5, 2) NOT NULL,
+	startDate DATE NOT NULL,
+	endDate DATE NOT NULL,
+    isPercentage BIT NOT NULL,
 );
 
 -- Products Table
 CREATE TABLE Products (
-    ProductID INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(100) NOT NULL,
-    Description NVARCHAR(255),
-    Price DECIMAL(10, 2) NOT NULL,
-    Images NVARCHAR(MAX),
-    Manufacturer NVARCHAR(100),
-    Dimensions NVARCHAR(50),
-    Weight DECIMAL(10, 2),
-    Rating DECIMAL(3, 2) CHECK (Rating BETWEEN 0 AND 5),
+    productID INT PRIMARY KEY IDENTITY(1,1),
+    name NVARCHAR(100) NOT NULL,
+    description NVARCHAR(255),
+    price DECIMAL(10, 2) NOT NULL,
+    images NVARCHAR(MAX),
+    manufacturer NVARCHAR(100),
+    dimensions NVARCHAR(50),
+    weight DECIMAL(10, 2),
+    rating DECIMAL(3, 2) CHECK (rating BETWEEN 0 AND 5),
     SKU NVARCHAR(50) UNIQUE NOT NULL,
-    CategoryID INT,
-    Stock INT NOT NULL CHECK (Stock >= 0),
-    SaleID INT NULL, -- Foreign key to Sale
-    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
-    FOREIGN KEY (SaleID) REFERENCES Sales(SaleID)
+    categoryID INT,
+    stock INT NOT NULL CHECK (stock >= 0),
+    saleID INT NULL, -- Foreign key to Sale
+    FOREIGN KEY (categoryID) REFERENCES Categories(categoryID),
+    FOREIGN KEY (saleID) REFERENCES Sales(saleID)
 );
 
 -- Checkout Cart Table
 CREATE TABLE CheckoutCart (
-    CartID INT IDENTITY PRIMARY KEY,
-    UserID INT NOT NULL REFERENCES Users(UserID) ON DELETE CASCADE,
-    ProductID INT NOT NULL REFERENCES Products(ProductID) ON DELETE CASCADE,
-    Quantity INT NOT NULL CHECK (Quantity >= 0),
+    cartID INT IDENTITY PRIMARY KEY,
+    userID INT NOT NULL REFERENCES Users(userID) ON DELETE CASCADE,
+    productID INT NOT NULL REFERENCES Products(productID) ON DELETE CASCADE,
+    quantity INT NOT NULL CHECK (quantity >= 0),
 );
 
 -- Sample Data Insertion
@@ -79,7 +79,7 @@ INSERT INTO Categories (CategoryName)
 VALUES ('Produce'), ('Dairy'), ('Meats');
 
 -- Insert Users
-INSERT INTO Users (Username, FirstName, LastName, Address, Email, PhoneNumber, Password, CreditcardNumber, CreditcardExpDate, cvv, ShippingLocation)
+INSERT INTO Users (username, firstName, lastName, address, email, phoneNumber, password, creditcardNumber, creditcardExpDate, cvv, shippingLocation)
 VALUES
 ('user1', 'First1', 'Last1', '123 Address Ln Apt 1', 'user1@example.com', '555-123-001', 'password', 1234567812345678, '12/25', 123, 'Shipping Address 1'),
 ('user2', 'First2', 'Last2', '123 Address Ln Apt 2', 'user2@example.com', '555-123-002', 'password', 1234567812345678, '12/25', 123, 'Shipping Address 2'),
@@ -113,13 +113,13 @@ VALUES
 ('user30', 'First30', 'Last30', '123 Address Ln Apt 30', 'user30@example.com', '555-123-030', 'password', 1234567812345678, '12/25', 123, 'Shipping Address 30');
 
 -- Insert Sales (Discounts)
-INSERT INTO Sales (DiscountAmount, StartDate, EndDate, IsPercentage)
+INSERT INTO Sales (discountAmount, startDate, endDate, isPercentage)
 VALUES 
 (15.00, GETDATE(), DATEADD(DAY, 30, GETDATE()), 1), -- 15% discount for Produce
 (1.50, GETDATE(), DATEADD(DAY, 30, GETDATE()), 0); -- $1.5 off for Meats
 
 -- Insert Products for Produce
-INSERT INTO Products (Name, Description, Price, CategoryID, Stock, SaleID, SKU)
+INSERT INTO Products (name, description, price, categoryID, stock, saleID, SKU)
 VALUES
 ('Tomatoes', 'Ripe roma tomatoes', 1.10, 1, 50, 1, 'P-SKU-1'),
 ('Lettuce', 'Fresh green lettuce', 1.20, 1, 50, 1, 'P-SKU-2'),
@@ -133,7 +133,7 @@ VALUES
 ('Peppers', 'Hot peppers fresh from local farms', 2.00, 1, 50, 1, 'P-SKU-10');
 
 -- Insert Products for Dairy
-INSERT INTO Products (Name, Description, Price, CategoryID, Stock, SKU)
+INSERT INTO Products (name, description, price, categoryID, stock, SKU)
 VALUES
 ('Full Fat Milk', 'Fresh full fat milk', 2.20, 2, 50, 'D-SKU-1'),
 ('Skim Milk', 'Fresh skim milk', 2.40, 2, 50, 'D-SKU-2'),
@@ -147,7 +147,7 @@ VALUES
 ('Fat Free Ice Cream', 'Fresh fat free ice cream', 4.00, 2, 50, 'D-SKU-10');
 
 -- Insert Products for Meats
-INSERT INTO Products (Name, Description, Price, CategoryID, Stock, SaleID, SKU)
+INSERT INTO Products (name, description, price, categoryID, stock, saleID, SKU)
 VALUES
 ('Ground Beef', 'Fresh ground beef', 5.50, 3, 50, 2, 'M-SKU-1'),
 ('Bacon', 'Fresh bacon', 6.00, 3, 50, 2, 'M-SKU-2'),
