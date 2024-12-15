@@ -1,0 +1,6 @@
+@CombinedAPI_HostAddress = http://localhost:5058
+
+GET {{CombinedAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
